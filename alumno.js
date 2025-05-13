@@ -237,10 +237,12 @@ async function verificarRespuestasCompletas() {
 async function verificarSiYaRespondio(dia) {
   const id = localStorage.getItem("id");
   const clase = localStorage.getItem("clase");
-  const fecha = new Date().toISOString().split("T")[0];
+
+  // Obtener la fecha local del usuario (independientemente de la zona horaria)
+  const fechaLocal = new Date().toLocaleDateString("en-CA"); // Formato: YYYY-MM-DD
 
   try {
-    const res = await fetch(`${URL}?accion=verificarEnvioDelDia&clase=${clase}&id=${id}&fecha=${fecha}`);
+    const res = await fetch(`${URL}?accion=verificarEnvioDelDia&clase=${clase}&id=${id}&fecha=${fechaLocal}`);
     const texto = await res.text();
     return texto === "true";
   } catch (err) {
@@ -248,6 +250,7 @@ async function verificarSiYaRespondio(dia) {
     return false;
   }
 }
+
 
 // ========================================
 // GUARDAR LA REFLEXIÓN EN LOCALSTORAGE
