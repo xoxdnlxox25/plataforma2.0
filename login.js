@@ -66,6 +66,45 @@ function loginAlumno() {
     });
 }
 
+// ============================
+// REGISTRAR NUEVA CLASE
+// ============================
+
+// Abrir el formulario modal
+function abrirFormularioClase() {
+  document.getElementById("modalRegistrarClase").classList.remove("oculto");
+}
+
+// Cerrar el formulario modal
+function cerrarFormularioClase() {
+  document.getElementById("modalRegistrarClase").classList.add("oculto");
+}
+
+// Registrar la nueva clase
+function registrarNuevaClase() {
+  const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
+  const pais = document.getElementById("paisMaestro").value.trim();
+
+  if (!nombreCompleto || !pais) {
+    mostrarToast("⚠ Por favor, complete todos los campos.", "error");
+    return;
+  }
+
+  const primerNombre = nombreCompleto.split(" ")[0];
+  const clave = `${primerNombre}1844`;
+
+  // Enviar datos al servidor para crear la clase
+  fetch(`${URL}?accion=registrarClase&nombre=${nombreCompleto}&pais=${pais}&clave=${clave}`)
+    .then(res => res.text())
+    .then(resp => {
+      mostrarToast(resp, "success");
+      cerrarFormularioClase();
+    })
+    .catch(() => {
+      mostrarToast("❌ Error al registrar la clase.", "error");
+    });
+}
+
 
 // ✅ Toast flotante único
 function mostrarToast(mensaje, tipo = "info") {
