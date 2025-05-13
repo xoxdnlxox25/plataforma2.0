@@ -21,13 +21,24 @@
   <div class="container">
     <h2>Ingreso Escuela Sabática</h2>
 
-    <!-- Enlace de WhatsApp para solicitar clase -->
-    <div style="text-align: right; margin-bottom: 12px;">
-      <a href="https://wa.me/59167891097?text=Hola%2C%20deseo%20administrar%20una%20nueva%20clase%20de%20Escuela%20Sab%C3%A1tica." 
-         target="_blank" class="solicitar-clase">
-        📩 Solicitar Clase
-      </a>
-    </div>
+   <!-- Reemplazar el botón de solicitar clase -->
+<div style="text-align: right; margin-bottom: 12px;">
+  <button onclick="abrirFormularioClase()" class="solicitar-clase">📋 Registrar Nueva Clase</button>
+</div>
+
+<!-- Modal para registrar una nueva clase -->
+<div id="modalRegistrarClase" class="modal oculto">
+  <div class="modal-content">
+    <h3>Nueva Clase</h3>
+    <label>Nombre Completo del Maestro:</label>
+    <input type="text" id="nombreCompletoMaestro" placeholder="Ej: Juan Pérez">
+    <label>País:</label>
+    <input type="text" id="paisMaestro" placeholder="Ej: Bolivia">
+    <button onclick="registrarNuevaClase()">Registrar Clase</button>
+    <button onclick="cerrarFormularioClase()">Cerrar</button>
+  </div>
+</div>
+
 
     <!-- LOGIN MAESTRO -->
     <div class="bloque fade-in">
