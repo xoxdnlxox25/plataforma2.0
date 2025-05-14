@@ -215,7 +215,7 @@ function registrarNuevaClase() {
       const numeroClase = match ? match[1] : "Desconocido";
 
       // Crear el mensaje sin duplicar la frase "Clase registrada exitosamente"
-      const mensaje = `🆔 ID de Clase: ${numeroClase}\n🔑Contraseña: ${clave}`;
+      const mensaje = `🆔 ID de Clase: ${numeroClase}<br>🔑Contraseña: ${clave}`;
 
       // Mostrar el modal con el mensaje
       mostrarMensajeClase(mensaje);
