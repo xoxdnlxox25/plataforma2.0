@@ -174,7 +174,6 @@ function cerrarMensajeClase() {
   }
 }
 
-// Modificación en el registro de clase
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
@@ -187,7 +186,7 @@ function registrarNuevaClase() {
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
 
- // Enviar datos al servidor para crear la clase usando método POST
+  // Enviar datos al servidor para crear la clase usando método POST
   fetch(`${URL}?accion=registrarClase`, {
     method: "POST",
     headers: {
@@ -211,14 +210,15 @@ function registrarNuevaClase() {
         return;
       }
 
-     // Extraer el número de clase del mensaje de éxito
-      const match = resp.match(/Clase (\d+)/);
+      // Ajuste: Extraer el número de la clase correctamente
+      const match = resp.match(/Clase\s*([a-zA-Z0-9]+)/);
       const numeroClase = match ? match[1] : "Desconocido";
-      const mensaje = `✅ Clase registrada exitosamente\nNúmero de Clase: Clase${numeroClase}\nContraseña: ${clave}`;
-        // Mostrar el modal con el mensaje
+      const mensaje = `✅ Clase registrada exitosamente\nNúmero de Clase: ${numeroClase}\nContraseña: ${clave}`;
+
+      // Mostrar el modal con el mensaje
       mostrarMensajeClase(mensaje);
 
-     // Limpiar campos de texto después del registro
+      // Limpiar campos de texto después del registro
       document.getElementById("nombreCompletoMaestro").value = "";
       document.getElementById("paisMaestro").value = "";
       cerrarFormularioClase();
@@ -228,6 +228,7 @@ function registrarNuevaClase() {
       mostrarToast("❌ Error al registrar la clase.", "error");
     });
 }
+
 
 
 
