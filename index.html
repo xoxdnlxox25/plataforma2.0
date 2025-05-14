@@ -50,12 +50,12 @@
     </div>
 
     <!-- Modal para mostrar el mensaje de registro exitoso -->
-    <div id="modalMensaje" class="modal oculto">
+    <div id="mensajeClaseRegistrada" class="modal oculto">
       <div class="modal-content">
-        <h3>Registro Exitoso</h3>
-        <p id="mensajeExito"></p>
+        <h3>✅ Clase Registrada Exitosamente</h3>
+        <p id="mensajeContenido" style="font-size: 1.2rem; font-weight: bold;"></p>
         <button onclick="copiarMensaje()">📋 Copiar</button>
-        <button onclick="cerrarModalMensaje()">Cerrar</button>
+        <button onclick="cerrarMensajeClase()">Cerrar</button>
       </div>
     </div>
 
@@ -127,25 +127,6 @@
       document.getElementById("modalCodigoInvitacion").classList.add("oculto");
     }
 
-    function verificarCodigo() {
-      const codigoIngresado = document.getElementById("codigoInvitacion").value.trim();
-
-      fetch(`${URL}?accion=getCodigo`)
-        .then(res => res.text())
-        .then(codigoValido => {
-          if (codigoIngresado === codigoValido) {
-            mostrarToast("✅ Código correcto", "success");
-            cerrarModalCodigo();
-            abrirModalRegistro();
-          } else {
-            mostrarToast("❌ Código incorrecto", "error");
-          }
-        })
-        .catch(() => {
-          mostrarToast("❌ Error al verificar el código", "error");
-        });
-    }
-
     function abrirModalRegistro() {
       document.getElementById("modalRegistrarClase").classList.remove("oculto");
     }
@@ -155,11 +136,11 @@
     }
 
     function cerrarModalMensaje() {
-      document.getElementById("modalMensaje").classList.add("oculto");
+      document.getElementById("mensajeClaseRegistrada").classList.add("oculto");
     }
 
     function copiarMensaje() {
-      const mensaje = document.getElementById("mensajeExito").textContent;
+      const mensaje = document.getElementById("mensajeContenido").textContent;
       navigator.clipboard.writeText(mensaje).then(() => {
         mostrarToast("📋 Copiado al portapapeles", "success");
       }).catch(() => {
