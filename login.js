@@ -84,7 +84,7 @@ function registrarNuevaClase() {
   console.log("📝 Datos enviados:", { nombreCompleto, pais, clave });
 
   // Enviar datos al servidor para crear la clase usando método POST
-  fetch(`${URL}`, {
+  fetch(`${URL}?accion=registrarClase`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
@@ -94,9 +94,13 @@ function registrarNuevaClase() {
       nombre: nombreCompleto,
       pais: pais,
       clave: clave
-    })
+    }).toString()
   })
-    .then(res => res.text())
+    .then(res => {
+      console.log("📝 Estado de la respuesta:", res.status, res.statusText);
+      if (!res.ok) throw new Error("Error en la respuesta del servidor");
+      return res.text();
+    })
     .then(resp => {
       console.log("✅ Respuesta del servidor:", resp);
       if (resp.includes("❌")) {
@@ -116,6 +120,7 @@ function registrarNuevaClase() {
       mostrarToast("❌ Error al registrar la clase.", "error");
     });
 }
+
 
 
 
