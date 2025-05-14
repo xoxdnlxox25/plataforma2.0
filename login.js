@@ -179,26 +179,32 @@ function registrarNuevaClase() {
       return res.text();
     })
     .then(resp => {
-      console.log("✅ Respuesta del servidor:", resp);
-      if (resp.includes("❌")) {
-        mostrarToast(resp, "error");
-        return;
-      }
+  console.log("✅ Respuesta del servidor:", resp);
+  if (resp.includes("❌")) {
+    mostrarToast(resp, "error");
+    return;
+  }
 
-      // Extraer el número de clase del mensaje de éxito
-      const numeroClase = resp.match(/Clase (\d+)/)[1];
-      mostrarToast(`✅ Clase registrada exitosamente\nNúmero de Clase: Clase${numeroClase}\nContraseña: ${clave}`, "success");
+  // Intentar extraer el número de clase
+  const match = resp.match(/Clase (\d+)/);
+  if (match) {
+    const numeroClase = match[1];
+    mostrarToast(`✅ Clase registrada exitosamente\nNúmero de Clase: Clase ${numeroClase}\nContraseña: ${clave}`, "success");
+  } else {
+    mostrarToast(`✅ Clase registrada correctamente\nContraseña: ${clave}`, "success");
+  }
 
-      // Limpiar campos de texto después del registro
-      document.getElementById("nombreCompletoMaestro").value = "";
-      document.getElementById("paisMaestro").value = "";
+  // Limpiar campos de texto después del registro
+  document.getElementById("nombreCompletoMaestro").value = "";
+  document.getElementById("paisMaestro").value = "";
 
-      cerrarFormularioClase();
-    })
-    .catch((error) => {
-      console.error("❌ Error al registrar la clase:", error);
-      mostrarToast("❌ Error al registrar la clase.", "error");
-    });
+  cerrarFormularioClase();
+})
+.catch((error) => {
+  console.error("❌ Error al registrar la clase:", error);
+  mostrarToast("❌ Error al registrar la clase.", "error");
+});
+
 }
 
 
