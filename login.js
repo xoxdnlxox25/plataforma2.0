@@ -144,17 +144,18 @@ function loginAlumno() {
 
 // Función para mostrar el mensaje de clase registrada
 function mostrarMensajeClase(mensaje) {
-  const contenedor = document.getElementById("mensajeClaseRegistrada");
-  const contenido = document.getElementById("mensajeContenido");
+  const contenedor = document.getElementById("mensajeExito");
+  const modal = document.getElementById("modalMensaje");
 
-  if (contenedor && contenido) {
-    contenido.textContent = mensaje;
-    contenedor.classList.remove("oculto");
+  if (contenedor && modal) {
+    contenedor.innerHTML = mensaje;  // Utiliza innerHTML para permitir formato en el mensaje
+    modal.classList.remove("oculto"); // Muestra el modal
     console.log("✅ Mensaje mostrado en el modal.");
   } else {
-    console.error("❌ No se encontró el contenedor del mensaje.");
+    console.error("❌ No se encontró el contenedor o el modal del mensaje.");
   }
 }
+
 
 // Función para copiar el mensaje
 function copiarMensaje() {
