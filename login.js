@@ -69,18 +69,6 @@ function loginAlumno() {
 // ============================
 // REGISTRAR NUEVA CLASE
 // ============================
-
-// Abrir el formulario modal
-function abrirFormularioClase() {
-  document.getElementById("modalRegistrarClase").classList.remove("oculto");
-}
-
-// Cerrar el formulario modal
-function cerrarFormularioClase() {
-  document.getElementById("modalRegistrarClase").classList.add("oculto");
-}
-
-// Registrar la nueva clase
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
@@ -109,6 +97,11 @@ function registrarNuevaClase() {
     .then(res => res.text())
     .then(resp => {
       mostrarToast(resp, "success");
+
+      // Limpiar campos de texto después del registro
+      document.getElementById("nombreCompletoMaestro").value = "";
+      document.getElementById("paisMaestro").value = "";
+
       cerrarFormularioClase();
     })
     .catch((error) => {
