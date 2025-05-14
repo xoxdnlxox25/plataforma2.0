@@ -144,18 +144,17 @@ function loginAlumno() {
 
 // Función para mostrar el mensaje de clase registrada
 function mostrarMensajeClase(mensaje) {
-  const contenedor = document.getElementById("mensajeExito");
-  const modal = document.getElementById("modalMensaje");
+  const contenedor = document.getElementById("mensajeClaseRegistrada");
+  const contenido = document.getElementById("mensajeContenido");
 
-  if (contenedor && modal) {
-    contenedor.innerHTML = mensaje;  // Utiliza innerHTML para permitir formato en el mensaje
-    modal.classList.remove("oculto"); // Muestra el modal
+  if (contenedor && contenido) {
+    contenido.textContent = mensaje;
+    contenedor.classList.remove("oculto");
     console.log("✅ Mensaje mostrado en el modal.");
   } else {
-    console.error("❌ No se encontró el contenedor o el modal del mensaje.");
+    console.error("❌ No se encontró el contenedor del mensaje.");
   }
 }
-
 
 // Función para copiar el mensaje
 function copiarMensaje() {
@@ -216,7 +215,7 @@ function registrarNuevaClase() {
       const numeroClase = match ? match[1] : "Desconocido";
 
       // Crear el mensaje sin duplicar la frase "Clase registrada exitosamente"
-      const mensaje = `🆔 ID de Clase: ${numeroClase}<br>🔑Contraseña: ${clave}`;
+      const mensaje = `🆔 ID de Clase: ${numeroClase}\n🔑Contraseña: ${clave}`;
 
       // Mostrar el modal con el mensaje
       mostrarMensajeClase(mensaje);
