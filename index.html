@@ -54,6 +54,7 @@
       <div class="modal-content">
         <h3>Registro Exitoso</h3>
         <p id="mensajeExito"></p>
+        <button onclick="copiarMensaje()">📋 Copiar</button>
         <button onclick="cerrarModalMensaje()">Cerrar</button>
       </div>
     </div>
@@ -155,6 +156,15 @@
 
     function cerrarModalMensaje() {
       document.getElementById("modalMensaje").classList.add("oculto");
+    }
+
+    function copiarMensaje() {
+      const mensaje = document.getElementById("mensajeExito").textContent;
+      navigator.clipboard.writeText(mensaje).then(() => {
+        mostrarToast("📋 Copiado al portapapeles", "success");
+      }).catch(() => {
+        mostrarToast("❌ Error al copiar", "error");
+      });
     }
   </script>
 
