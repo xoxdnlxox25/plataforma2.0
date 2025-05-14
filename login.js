@@ -210,10 +210,12 @@ function registrarNuevaClase() {
         return;
       }
 
-      // Ajuste: Extraer el número de la clase correctamente
+      // Ajuste: Evitar duplicidad en el mensaje
       const match = resp.match(/Clase\s*([a-zA-Z0-9]+)/);
       const numeroClase = match ? match[1] : "Desconocido";
-      const mensaje = `✅ Clase registrada exitosamente\nNúmero de Clase: ${numeroClase}\nContraseña: ${clave}`;
+
+      // Crear el mensaje sin duplicar la frase "Clase registrada exitosamente"
+      const mensaje = `✅ Número de Clase: Clase${numeroClase}\nContraseña: ${clave}`;
 
       // Mostrar el modal con el mensaje
       mostrarMensajeClase(mensaje);
@@ -228,8 +230,6 @@ function registrarNuevaClase() {
       mostrarToast("❌ Error al registrar la clase.", "error");
     });
 }
-
-
 
 
 // ============================
