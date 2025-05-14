@@ -69,7 +69,6 @@ function loginAlumno() {
 // ============================
 // REGISTRAR NUEVA CLASE
 // ============================
-// Registrar la nueva clase
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
@@ -81,6 +80,8 @@ function registrarNuevaClase() {
 
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
+
+  console.log("📝 Datos enviados:", { nombreCompleto, pais, clave });
 
   // Enviar datos al servidor para crear la clase usando método POST
   fetch(`${URL}`, {
@@ -95,12 +96,14 @@ function registrarNuevaClase() {
       clave: clave
     })
   })
-    .then(res => {
-      if (!res.ok) throw new Error("Error en la respuesta del servidor");
-      return res.text();
-    })
+    .then(res => res.text())
     .then(resp => {
-      mostrarToast(resp, "success");
+      console.log("✅ Respuesta del servidor:", resp);
+      if (resp.includes("❌")) {
+        mostrarToast(resp, "error");
+        return;
+      }
+      mostrarToast("✅ Clase registrada correctamente", "success");
 
       // Limpiar campos de texto después del registro
       document.getElementById("nombreCompletoMaestro").value = "";
@@ -113,7 +116,6 @@ function registrarNuevaClase() {
       mostrarToast("❌ Error al registrar la clase.", "error");
     });
 }
-
 
 
 
