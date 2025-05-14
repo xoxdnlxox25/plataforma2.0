@@ -65,58 +65,42 @@ function loginAlumno() {
       idInput.value = "";
     });
 }
-
 // Función para registrar una nueva clase
-function registrarNuevaClase() {
+async function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
 
-  if (!nombreCompleto || !pais) {
-    mostrarToast("⚠ Por favor, complete todos los campos.", "error");
+  if (!nombreCompleto) {
+    alert("Por favor, ingrese el nombre completo del maestro.");
     return;
   }
 
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
 
-  console.log("📝 Datos enviados:", { nombreCompleto, pais, clave });
-
-  // Enviar datos al servidor para crear la clase usando método POST
-  fetch(`${URL}?accion=registrarClase`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: new URLSearchParams({
-      accion: "registrarClase",
-      nombre: nombreCompleto,
-      pais: pais,
-      clave: clave
-    }).toString()
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Error en la respuesta del servidor");
-      return res.text();
-    })
-    .then(resp => {
-      console.log("✅ Respuesta del servidor:", resp);
-      if (resp.includes("❌")) {
-        mostrarToast(resp, "error");
-        return;
-      }
-      mostrarToast("✅ Clase registrada correctamente", "success");
-
-      // Limpiar campos de texto después del registro
-      document.getElementById("nombreCompletoMaestro").value = "";
-      document.getElementById("paisMaestro").value = "";
-
-      cerrarFormularioClase();
-    })
-    .catch((error) => {
-      console.error("❌ Error al registrar la clase:", error);
-      mostrarToast("❌ Error al registrar la clase.", "error");
+  try {
+    const response = await fetch(`${URL}?accion=registrarClase`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({
+        nombre: nombreCompleto,
+        pais: pais,
+        clave: clave
+      })
     });
+
+    const resultado = await response.text();
+    alert(resultado);
+    cerrarFormularioClase();
+  } catch (error) {
+    console.error("Error al registrar la clase:", error);
+    alert("Error al registrar la clase.");
+  }
 }
+
+
 
 
 // ✅ Toast flotante único
