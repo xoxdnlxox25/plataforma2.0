@@ -66,6 +66,34 @@ function loginAlumno() {
     });
 }
 
+// ============================
+// FUNCIONES DEL MODAL DE REGISTRO
+// ============================
+
+// Función para abrir el formulario modal de registro de clase
+function abrirFormularioClase() {
+  const modal = document.getElementById("modalRegistrarClase");
+  if (modal) {
+    modal.classList.remove("oculto");
+    console.log("✅ Formulario de registro abierto.");
+  } else {
+    console.error("❌ No se encontró el modal de registro.");
+  }
+}
+
+// Función para cerrar el formulario modal de registro de clase
+function cerrarFormularioClase() {
+  const modal = document.getElementById("modalRegistrarClase");
+  if (modal) {
+    modal.classList.add("oculto");
+    console.log("✅ Formulario de registro cerrado.");
+  } else {
+    console.error("❌ No se encontró el modal de registro.");
+  }
+}
+
+
+
 // Registrar la nueva clase
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
