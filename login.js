@@ -69,6 +69,7 @@ function loginAlumno() {
 // ============================
 // REGISTRAR NUEVA CLASE
 // ============================
+// Registrar la nueva clase
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
@@ -94,7 +95,10 @@ function registrarNuevaClase() {
       clave: clave
     })
   })
-    .then(res => res.text())
+    .then(res => {
+      if (!res.ok) throw new Error("Error en la respuesta del servidor");
+      return res.text();
+    })
     .then(resp => {
       mostrarToast(resp, "success");
 
@@ -109,6 +113,7 @@ function registrarNuevaClase() {
       mostrarToast("❌ Error al registrar la clase.", "error");
     });
 }
+
 
 
 
