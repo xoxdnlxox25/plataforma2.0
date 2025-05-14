@@ -747,3 +747,37 @@ h3 {
     padding: 10px;
   }
 }
+/* Modal para el código de invitación */
+#modalCodigoInvitacion .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+#modalCodigoInvitacion input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  font-size: 16px;
+}
+
+#modalCodigoInvitacion button {
+  background-color: #3498db;
+  color: white;
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#modalCodigoInvitacion button:hover {
+  background-color: #2980b9;
+}
