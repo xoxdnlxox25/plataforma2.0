@@ -21,24 +21,33 @@
   <div class="container">
     <h2>Ingreso Escuela Sabática</h2>
 
-   <!-- Reemplazar el botón de solicitar clase -->
-<div style="text-align: right; margin-bottom: 12px;">
-  <button onclick="abrirFormularioClase()" class="solicitar-clase">📋 Registrar Nueva Clase</button>
-</div>
+    <!-- Botón para solicitar nueva clase -->
+    <div style="text-align: right; margin-bottom: 12px;">
+      <button onclick="abrirFormularioClase()" class="solicitar-clase">📋 Registrar Nueva Clase</button>
+    </div>
 
-<!-- Modal para registrar una nueva clase -->
-<div id="modalRegistrarClase" class="modal oculto">
-  <div class="modal-content">
-    <h3>Nueva Clase</h3>
-    <label>Nombre Completo del Maestro:</label>
-    <input type="text" id="nombreCompletoMaestro" placeholder="Ej: Juan Pérez">
-    <label>País:</label>
-    <input type="text" id="paisMaestro" placeholder="Ej: Bolivia">
-    <button onclick="registrarNuevaClase()">Registrar Clase</button>
-    <button onclick="cerrarFormularioClase()">Cerrar</button>
-  </div>
-</div>
+    <!-- Modal para ingresar el código de invitación -->
+    <div id="modalCodigoInvitacion" class="modal oculto">
+      <div class="modal-content">
+        <h3>Introducir Código de Invitación</h3>
+        <input type="text" id="codigoInvitacion" placeholder="Código de invitación">
+        <button onclick="verificarCodigo()">Verificar</button>
+        <button onclick="cerrarModalCodigo()">Cerrar</button>
+      </div>
+    </div>
 
+    <!-- Modal para registrar una nueva clase -->
+    <div id="modalRegistrarClase" class="modal oculto">
+      <div class="modal-content">
+        <h3>Nueva Clase</h3>
+        <label>Nombre Completo del Maestro:</label>
+        <input type="text" id="nombreCompletoMaestro" placeholder="Ej: Juan Pérez">
+        <label>País:</label>
+        <input type="text" id="paisMaestro" placeholder="Ej: Bolivia">
+        <button onclick="registrarNuevaClase()">Registrar Clase</button>
+        <button onclick="cerrarFormularioClase()">Cerrar</button>
+      </div>
+    </div>
 
     <!-- LOGIN MAESTRO -->
     <div class="bloque fade-in">
@@ -98,6 +107,42 @@
         });
       });
     });
+
+    // Funciones para el manejo del código de invitación
+    function abrirFormularioClase() {
+      document.getElementById("modalCodigoInvitacion").classList.remove("oculto");
+    }
+
+    function cerrarModalCodigo() {
+      document.getElementById("modalCodigoInvitacion").classList.add("oculto");
+    }
+
+    function verificarCodigo() {
+      const codigoIngresado = document.getElementById("codigoInvitacion").value.trim();
+
+      fetch(`${URL}?accion=getCodigo`)
+        .then(res => res.text())
+        .then(codigoValido => {
+          if (codigoIngresado === codigoValido) {
+            mostrarToast("✅ Código correcto", "success");
+            cerrarModalCodigo();
+            abrirModalRegistro();
+          } else {
+            mostrarToast("❌ Código incorrecto", "error");
+          }
+        })
+        .catch(() => {
+          mostrarToast("❌ Error al verificar el código", "error");
+        });
+    }
+
+    function abrirModalRegistro() {
+      document.getElementById("modalRegistrarClase").classList.remove("oculto");
+    }
+
+    function cerrarFormularioClase() {
+      document.getElementById("modalRegistrarClase").classList.add("oculto");
+    }
   </script>
 
 </body>
