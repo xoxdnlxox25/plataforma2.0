@@ -49,6 +49,15 @@
       </div>
     </div>
 
+    <!-- Modal para mostrar el mensaje de registro exitoso -->
+    <div id="modalMensaje" class="modal oculto">
+      <div class="modal-content">
+        <h3>Registro Exitoso</h3>
+        <p id="mensajeExito"></p>
+        <button onclick="cerrarModalMensaje()">Cerrar</button>
+      </div>
+    </div>
+
     <!-- LOGIN MAESTRO -->
     <div class="bloque fade-in">
       <h3>👨‍🏫 Login Maestro</h3>
@@ -142,6 +151,10 @@
 
     function cerrarFormularioClase() {
       document.getElementById("modalRegistrarClase").classList.add("oculto");
+    }
+
+    function cerrarModalMensaje() {
+      document.getElementById("modalMensaje").classList.add("oculto");
     }
   </script>
 
