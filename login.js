@@ -142,11 +142,36 @@ function loginAlumno() {
     });
 }
 
-// ============================
-// REGISTRAR NUEVA CLASE
-// ============================
-// Función para registrar una nueva clase
-// Función para registrar una nueva clase
+// Función para mostrar el mensaje de clase registrada
+function mostrarMensajeClase(mensaje) {
+  const contenedor = document.getElementById("mensajeClaseRegistrada");
+  const contenido = document.getElementById("mensajeContenido");
+
+  if (contenedor && contenido) {
+    contenido.textContent = mensaje;
+    contenedor.classList.remove("oculto");
+  }
+}
+
+// Función para copiar el mensaje
+function copiarMensaje() {
+  const contenido = document.getElementById("mensajeContenido").textContent;
+  navigator.clipboard.writeText(contenido).then(() => {
+    mostrarToast("📋 Copiado al portapapeles", "success");
+  }).catch(() => {
+    mostrarToast("❌ No se pudo copiar", "error");
+  });
+}
+
+// Función para cerrar el mensaje de clase registrada
+function cerrarMensajeClase() {
+  const contenedor = document.getElementById("mensajeClaseRegistrada");
+  if (contenedor) {
+    contenedor.classList.add("oculto");
+  }
+}
+
+// Modificación en el registro de clase
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
@@ -158,8 +183,6 @@ function registrarNuevaClase() {
 
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
-
-  console.log("📝 Datos enviados:", { nombreCompleto, pais, clave });
 
   // Enviar datos al servidor para crear la clase usando método POST
   fetch(`${URL}?accion=registrarClase`, {
@@ -179,33 +202,34 @@ function registrarNuevaClase() {
       return res.text();
     })
     .then(resp => {
-  console.log("✅ Respuesta del servidor:", resp);
-  if (resp.includes("❌")) {
-    mostrarToast(resp, "error");
-    return;
-  }
+      console.log("✅ Respuesta del servidor:", resp);
+      if (resp.includes("❌")) {
+        mostrarToast(resp, "error");
+        return;
+      }
 
-  // Intentar extraer el número de clase
-  const match = resp.match(/Clase (\d+)/);
-  if (match) {
-    const numeroClase = match[1];
-    mostrarToast(`✅ Clase registrada exitosamente\nNúmero de Clase: Clase ${numeroClase}\nContraseña: ${clave}`, "success");
-  } else {
-    mostrarToast(`✅ Clase registrada correctamente\nContraseña: ${clave}`, "success");
-  }
+      // Extraer el número de clase del mensaje de éxito
+      const match = resp.match(/Clase (\d+)/);
+      if (match) {
+        const numeroClase = match[1];
+        const mensaje = `✅ Clase registrada exitosamente\nNúmero de Clase: Clase${numeroClase}\nContraseña: ${clave}`;
+        mostrarMensajeClase(mensaje);
+      } else {
+        mostrarMensajeClase(`✅ Clase registrada correctamente\nContraseña: ${clave}`);
+      }
 
-  // Limpiar campos de texto después del registro
-  document.getElementById("nombreCompletoMaestro").value = "";
-  document.getElementById("paisMaestro").value = "";
+      // Limpiar campos de texto después del registro
+      document.getElementById("nombreCompletoMaestro").value = "";
+      document.getElementById("paisMaestro").value = "";
 
-  cerrarFormularioClase();
-})
-.catch((error) => {
-  console.error("❌ Error al registrar la clase:", error);
-  mostrarToast("❌ Error al registrar la clase.", "error");
-});
-
+      cerrarFormularioClase();
+    })
+    .catch((error) => {
+      console.error("❌ Error al registrar la clase:", error);
+      mostrarToast("❌ Error al registrar la clase.", "error");
+    });
 }
+
 
 
 // ============================
