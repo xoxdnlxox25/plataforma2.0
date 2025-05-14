@@ -150,6 +150,9 @@ function mostrarMensajeClase(mensaje) {
   if (contenedor && contenido) {
     contenido.textContent = mensaje;
     contenedor.classList.remove("oculto");
+    console.log("✅ Mensaje mostrado en el modal.");
+  } else {
+    console.error("❌ No se encontró el contenedor del mensaje.");
   }
 }
 
@@ -184,7 +187,7 @@ function registrarNuevaClase() {
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
 
-  // Enviar datos al servidor para crear la clase usando método POST
+ // Enviar datos al servidor para crear la clase usando método POST
   fetch(`${URL}?accion=registrarClase`, {
     method: "POST",
     headers: {
@@ -208,20 +211,16 @@ function registrarNuevaClase() {
         return;
       }
 
-      // Extraer el número de clase del mensaje de éxito
+     // Extraer el número de clase del mensaje de éxito
       const match = resp.match(/Clase (\d+)/);
-      if (match) {
-        const numeroClase = match[1];
-        const mensaje = `✅ Clase registrada exitosamente\nNúmero de Clase: Clase${numeroClase}\nContraseña: ${clave}`;
-        mostrarMensajeClase(mensaje);
-      } else {
-        mostrarMensajeClase(`✅ Clase registrada correctamente\nContraseña: ${clave}`);
-      }
+      const numeroClase = match ? match[1] : "Desconocido";
+      const mensaje = `✅ Clase registrada exitosamente\nNúmero de Clase: Clase${numeroClase}\nContraseña: ${clave}`;
+        // Mostrar el modal con el mensaje
+      mostrarMensajeClase(mensaje);
 
-      // Limpiar campos de texto después del registro
+     // Limpiar campos de texto después del registro
       document.getElementById("nombreCompletoMaestro").value = "";
       document.getElementById("paisMaestro").value = "";
-
       cerrarFormularioClase();
     })
     .catch((error) => {
