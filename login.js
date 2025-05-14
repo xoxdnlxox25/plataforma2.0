@@ -93,17 +93,30 @@ function registrarNuevaClase() {
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
 
-  // Enviar datos al servidor para crear la clase
-  fetch(`${URL}?accion=registrarClase&nombre=${nombreCompleto}&pais=${pais}&clave=${clave}`)
+  // Enviar datos al servidor para crear la clase usando método POST
+  fetch(`${URL}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: new URLSearchParams({
+      accion: "registrarClase",
+      nombre: nombreCompleto,
+      pais: pais,
+      clave: clave
+    })
+  })
     .then(res => res.text())
     .then(resp => {
       mostrarToast(resp, "success");
       cerrarFormularioClase();
     })
-    .catch(() => {
+    .catch((error) => {
+      console.error("❌ Error al registrar la clase:", error);
       mostrarToast("❌ Error al registrar la clase.", "error");
     });
 }
+
 
 
 // ✅ Toast flotante único
