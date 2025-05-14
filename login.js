@@ -1,77 +1,31 @@
-// Login Maestro (ahora obtiene también el nombre del maestro)
-function loginMaestro() {
-  const claseInput = document.getElementById("claseMaestro");
-  const claveInput = document.getElementById("claveMaestro");
-
-  const clase = claseInput.value.trim();
-  const clave = claveInput.value.trim();
-
-  fetch(`${URL}?accion=getClases`)
-    .then(res => res.json())
-    .then(data => {
-      const claseEncontrada = data.find(c => c.ID_CLASE === clase && c.Contraseña === clave);
-
-      if (claseEncontrada) {
-        localStorage.setItem("tipo", "maestro");
-        localStorage.setItem("clase", clase);
-        localStorage.setItem("maestro", claseEncontrada.Maestro); // ✅ Guarda el nombre real
-        window.location.href = "panel-maestro.html";
-      } else {
-        mostrarToast("❌ Contraseña incorrecta o clase no válida", "error");
-        claseInput.value = "";
-        claveInput.value = "";
-      }
-    })
-    .catch(() => {
-      mostrarToast("❌ Error al conectar con el servidor", "error");
-      claseInput.value = "";
-      claveInput.value = "";
-    });
-}
-
-// Login Alumno usando ID_ALUMNO (más seguro)
-function loginAlumno() {
-  const claseInput = document.getElementById("claseAlumno");
-  const idInput = document.getElementById("alumno");
-
-  const clase = claseInput.value.trim();
-  const idAlumno = idInput.value.trim();
-
-  if (!clase || !idAlumno) {
-    mostrarToast("⚠ Por favor ingresa tu clase y tu ID de alumno", "error");
-    return;
-  }
-
-  fetch(`${URL}?accion=getAlumnos&clase=${clase}`)
-    .then(res => res.json())
-    .then(data => {
-      const encontrado = data.find(a => a.ID_ALUMNO.toLowerCase() === idAlumno.toLowerCase());
-
-      if (encontrado) {
-        localStorage.setItem("tipo", "alumno");
-        localStorage.setItem("clase", clase);
-        localStorage.setItem("alumno", encontrado.NombreAlumno); // Muestra el nombre correcto después
-        localStorage.setItem("id", encontrado.ID_ALUMNO);
-        window.location.href = "panel-alumno.html";
-      } else {
-        mostrarToast("❌ ID de alumno no encontrado en esa clase", "error");
-        claseInput.value = "";
-        idInput.value = "";
-      }
-    })
-    .catch(() => {
-      mostrarToast("❌ Error al conectar con el servidor", "error");
-      claseInput.value = "";
-      idInput.value = "";
-    });
-}
-
 // ============================
 // FUNCIONES DEL MODAL DE REGISTRO
 // ============================
 
-// Función para abrir el formulario modal de registro de clase
+// Función para abrir el formulario de ingreso de código de invitación
 function abrirFormularioClase() {
+  const modalCodigo = document.getElementById("modalCodigoInvitacion");
+  if (modalCodigo) {
+    modalCodigo.classList.remove("oculto");
+    console.log("✅ Solicitud de código de invitación abierta.");
+  } else {
+    console.error("❌ No se encontró el modal de código.");
+  }
+}
+
+// Función para cerrar el modal del código de invitación
+function cerrarModalCodigo() {
+  const modalCodigo = document.getElementById("modalCodigoInvitacion");
+  if (modalCodigo) {
+    modalCodigo.classList.add("oculto");
+    console.log("✅ Formulario de código cerrado.");
+  } else {
+    console.error("❌ No se encontró el modal de código.");
+  }
+}
+
+// Función para abrir el formulario modal de registro de clase
+function abrirModalRegistro() {
   const modal = document.getElementById("modalRegistrarClase");
   if (modal) {
     modal.classList.remove("oculto");
@@ -92,9 +46,105 @@ function cerrarFormularioClase() {
   }
 }
 
+// ============================
+// FUNCIONES DE CÓDIGO DE INVITACIÓN
+// ============================
 
+// Función para verificar el código de invitación
+function verificarCodigo() {
+  const codigoIngresado = document.getElementById("codigoInvitacion").value.trim();
 
-// Función para registrar una nueva clase
+  fetch(`${URL}?accion=getCodigo`)
+    .then(res => res.text())
+    .then(codigoValido => {
+      if (codigoIngresado === codigoValido) {
+        mostrarToast("✅ Código correcto", "success");
+        cerrarModalCodigo();
+        abrirModalRegistro();
+      } else {
+        mostrarToast("❌ Código incorrecto", "error");
+      }
+    })
+    .catch(() => {
+      mostrarToast("❌ Error al verificar el código", "error");
+    });
+}
+
+// ============================
+// LOGIN MAESTRO
+// ============================
+function loginMaestro() {
+  const claseInput = document.getElementById("claseMaestro");
+  const claveInput = document.getElementById("claveMaestro");
+
+  const clase = claseInput.value.trim();
+  const clave = claveInput.value.trim();
+
+  fetch(`${URL}?accion=getClases`)
+    .then(res => res.json())
+    .then(data => {
+      const claseEncontrada = data.find(c => c.ID_CLASE === clase && c.Contraseña === clave);
+
+      if (claseEncontrada) {
+        localStorage.setItem("tipo", "maestro");
+        localStorage.setItem("clase", clase);
+        localStorage.setItem("maestro", claseEncontrada.Maestro);
+        window.location.href = "panel-maestro.html";
+      } else {
+        mostrarToast("❌ Contraseña incorrecta o clase no válida", "error");
+        claseInput.value = "";
+        claveInput.value = "";
+      }
+    })
+    .catch(() => {
+      mostrarToast("❌ Error al conectar con el servidor", "error");
+      claseInput.value = "";
+      claveInput.value = "";
+    });
+}
+
+// ============================
+// LOGIN ALUMNO
+// ============================
+function loginAlumno() {
+  const claseInput = document.getElementById("claseAlumno");
+  const idInput = document.getElementById("alumno");
+
+  const clase = claseInput.value.trim();
+  const idAlumno = idInput.value.trim();
+
+  if (!clase || !idAlumno) {
+    mostrarToast("⚠ Por favor ingresa tu clase y tu ID de alumno", "error");
+    return;
+  }
+
+  fetch(`${URL}?accion=getAlumnos&clase=${clase}`)
+    .then(res => res.json())
+    .then(data => {
+      const encontrado = data.find(a => a.ID_ALUMNO.toLowerCase() === idAlumno.toLowerCase());
+
+      if (encontrado) {
+        localStorage.setItem("tipo", "alumno");
+        localStorage.setItem("clase", clase);
+        localStorage.setItem("alumno", encontrado.NombreAlumno);
+        localStorage.setItem("id", encontrado.ID_ALUMNO);
+        window.location.href = "panel-alumno.html";
+      } else {
+        mostrarToast("❌ ID de alumno no encontrado en esa clase", "error");
+        claseInput.value = "";
+        idInput.value = "";
+      }
+    })
+    .catch(() => {
+      mostrarToast("❌ Error al conectar con el servidor", "error");
+      claseInput.value = "";
+      idInput.value = "";
+    });
+}
+
+// ============================
+// REGISTRAR NUEVA CLASE
+// ============================
 function registrarNuevaClase() {
   const nombreCompleto = document.getElementById("nombreCompletoMaestro").value.trim();
   const pais = document.getElementById("paisMaestro").value.trim();
@@ -107,9 +157,6 @@ function registrarNuevaClase() {
   const primerNombre = nombreCompleto.split(" ")[0];
   const clave = `${primerNombre}1844`;
 
-  console.log("📝 Datos enviados:", { nombreCompleto, pais, clave });
-
-  // Enviar datos al servidor para crear la clase usando método POST
   fetch(`${URL}?accion=registrarClase`, {
     method: "POST",
     headers: {
@@ -122,22 +169,13 @@ function registrarNuevaClase() {
       clave: clave
     }).toString()
   })
-    .then(res => {
-      if (!res.ok) throw new Error("Error en la respuesta del servidor");
-      return res.text();
-    })
+    .then(res => res.text())
     .then(resp => {
-      console.log("✅ Respuesta del servidor:", resp);
       if (resp.includes("❌")) {
         mostrarToast(resp, "error");
         return;
       }
       mostrarToast("✅ Clase registrada correctamente", "success");
-
-      // Limpiar campos de texto después del registro
-      document.getElementById("nombreCompletoMaestro").value = "";
-      document.getElementById("paisMaestro").value = "";
-
       cerrarFormularioClase();
     })
     .catch((error) => {
@@ -146,15 +184,14 @@ function registrarNuevaClase() {
     });
 }
 
-
-
-
-// ✅ Toast flotante único
+// ============================
+// TOAST FLOTANTE
+// ============================
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
 
-  contenedor.innerHTML = ""; // Limpiar notificaciones anteriores
+  contenedor.innerHTML = ""; 
 
   const toast = document.createElement("div");
   toast.className = `toast ${tipo}`;
@@ -163,4 +200,3 @@ function mostrarToast(mensaje, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
-
